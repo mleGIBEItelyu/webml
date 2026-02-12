@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GIBEI Forecasting Dashboard
+> **AI-Driven Market Intelligence & Predictive Analytics**
 
-## Getting Started
+GIBEI Forecasting is a state-of-the-art financial analytics platform designed for the GIBEI Research Lab at Telkom University. It leverages advanced machine learning models to provide deep-tier stock price forecasting, risk assessment, and market trend analysis through a premium, user-centric interface.
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   **Interactive Predictive Charting**: High-fidelity visualization of actual vs. forecasted stock prices with confidence intervals.
+-   **Bento-Grid Dashboard**: A modern, responsive layout designed for high-density information display.
+-   **AI Conclusion Engine**: Automated qualitative recommendations (Strong Buy, Hold, etc.) powered by trend analysis.
+-   **Real-Time Metrics**: Dynamic tracking of Volatility, Volume, and Risk Levels.
+-   **Secure Authentication**: Role-based access control (RBAC) powered by NextAuth.js.
+-   **Localized Intelligence**: Real-time Jakarta Time (WIB) synchronization for Indonesian market accuracy.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Technology Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **Framework**: [Next.js](https://nextjs.org/) (App Router, Turbopack)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **Database**: [Turso](https://turso.tech/) (SQLite at the Edge)
+-   **ORM**: [Drizzle ORM](https://orm.drizzle.team/)
+-   **Authentication**: [NextAuth.js v5](https://authjs.dev/)
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **Charts**: [Recharts](https://recharts.org/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📦 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+-   Node.js 18+ 
+-   A Turso Database instance (or local SQLite)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  **Clone the repository:**
+    ```bash
+    git clone [repository-url]
+    cd webmlgibei
+    ```
 
-## Deploy on Vercel
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3.  **Configure Environment Variables:**
+    Create a `.env.local` file with the following keys:
+    ```env
+    TURSO_DATABASE_URL=
+    TURSO_AUTH_TOKEN=
+    AUTH_SECRET=
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 🔒 Security & Privacy
+
+-   Implemented `noindex, nofollow` meta tags for internal research privacy.
+-   Strict authentication layer protecting analytical modules.
+-   Secure data proxying for all external AI insights.
+
+---
+
+&copy; 2025-2026 GIBEI Telkom University Research Lab. All Rights Reserved.
