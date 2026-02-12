@@ -11,14 +11,16 @@ export default function DashboardStatsGrid() {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4">
       {stats.map((item, i) => (
-        <div key={i} className="bg-white p-4 rounded-2xl border border-slate-100 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow">
-           <div className={`p-2 rounded-full ${item.bg} mb-2`}>
-              <item.icon className={`w-4 h-4 ${item.color}`} />
+        <div key={i} className="bg-white p-4 rounded-2xl border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow group">
+           <div className={`p-2.5 rounded-xl ${item.bg} group-hover:scale-110 transition-transform`}>
+              <item.icon className={`w-5 h-5 ${item.color}`} />
            </div>
-           <p className="text-xs text-slate-400 font-medium mb-0.5">{item.label}</p>
-           <p className={`text-lg font-bold ${item.color}`}>{item.val}</p>
+           <div className="text-left">
+             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{item.label}</p>
+             <p className={`text-base font-black ${item.color}`}>{item.val}</p>
+           </div>
         </div>
       ))}
     </div>
