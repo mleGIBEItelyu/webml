@@ -29,7 +29,7 @@ export default function DashboardMetrics({ query }: DashboardMetricsProps) {
   }, []);
   
   return (
-    <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_2px_40px_-12px_rgba(0,0,0,0.08)] border border-slate-100 mb-6 animate-in fade-in duration-700">
+    <div className="bg-white rounded-4xl p-6 sm:p-8 shadow-[0_2px_40px_-12px_rgba(0,0,0,0.08)] border border-slate-100 mb-6 animate-in fade-in duration-700">
       <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
         
         {/* Left: Identity & Price */}

@@ -73,7 +73,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
             <div className="lg:col-span-2 space-y-6">
               
               {/* Chart Card */}
-              <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-slate-100 shadow-sm">
+              <div className="bg-white p-6 sm:p-8 rounded-4xl border border-slate-100 shadow-sm">
                  <div className="flex justify-between items-center mb-6">
                    <h3 className="font-bold text-slate-800 text-lg">Price Movement Analysis</h3>
                    <div className="flex gap-2">

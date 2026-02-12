@@ -39,7 +39,7 @@ export default function SearchModal({ isOpen, onClose, onSearch }: SearchModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-xl p-4 transition-all duration-300 animate-in fade-in">
-      <div className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-2xl shadow-slate-200/50 w-full max-w-lg border border-slate-100 transform scale-100 animate-in zoom-in duration-200 relative">
+      <div className="bg-white p-6 sm:p-8 rounded-4xl shadow-2xl shadow-slate-200/50 w-full max-w-lg border border-slate-100 transform scale-100 animate-in zoom-in duration-200 relative">
          <div className="text-center mb-6 sm:mb-8">
            <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 rotate-3 hover:rotate-6 transition-transform">
              <Search className="w-6 h-6 sm:w-8 sm:h-8 text-red-600" />
