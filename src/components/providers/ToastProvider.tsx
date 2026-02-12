@@ -37,7 +37,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     const id = Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { id, message, type }]);
 
-    // Auto-hide after 3 seconds unless it's a loading toast
+    // Auto-hide after 3 seconds unless it's a loading toas
     if (type !== 'loading') {
       setTimeout(() => {
         hideToast(id);
