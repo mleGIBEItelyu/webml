@@ -44,7 +44,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
   const userName = user?.name || 'Admin';
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 animate-in fade-in slide-in-from-bottom-4 duration-500 relative">
+    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 animate-in fade-in duration-500 relative overflow-x-hidden">
       
       {/* Search Modal Overlay */}
       <SearchModal 
@@ -87,8 +87,6 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                     <PriceForecastChart />
                  </div>
               </div>
-
-              <DashboardStatsGrid />
 
             </div>
 
