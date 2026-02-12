@@ -9,11 +9,11 @@ export default auth((req) => {
 
     if (isOnDashboard) {
         if (isLoggedIn) return NextResponse.next();
-        return Response.redirect(new URL("/login", req.nextUrl));
+        return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
 
     if (isLoginPage) {
-        if (isLoggedIn) return Response.redirect(new URL("/dashboard", req.nextUrl));
+        if (isLoggedIn) return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
         return NextResponse.next();
     }
 

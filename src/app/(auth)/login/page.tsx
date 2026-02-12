@@ -1,14 +1,50 @@
-'use client';
+"use client"
 
-import { useActionState } from 'react';
-import { authenticate } from '@/lib/actions';
-import { Mail, Lock, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useToast } from '@/components/providers/ToastProvider';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const [errorMessage, dispatch, isPending] = useActionState(authenticate, undefined);
   const [showPassword, setShowPassword] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const { showToast, hideToast } = useToast();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPending(true);
+    const toastId = showToast('Authenticating...', 'loading');
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      hideToast(toastId);
+
+      if (result?.error) {
+        showToast(result.error || 'Invalid credentials.', 'error');
+        setIsPending(false);
+      } else {
+        showToast('Login successful! Redirecting...', 'success');
+        router.push('/dashboard');
+        router.refresh(); 
+      }
+    } catch (err) {
+      hideToast(toastId);
+      showToast('An unexpected error occurred.', 'error');
+      setIsPending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden font-sans text-slate-900">
@@ -32,16 +68,16 @@ export default function LoginPage() {
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mb-2">
               GIBEI <span className="text-red-600 font-bold">Forecasting</span>
             </h1>
-            <p className="text-slate-500 text-sm">Masuk untuk mengelola platform</p>
+            <p className="text-slate-500 text-sm">Log in to manage the platform</p>
         </div>
 
         {/* 3. The Minimalist Form */}
-        <form action={dispatch} className="space-y-4 sm:space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
 
           {/* Email */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1" htmlFor="email">
-              Email
+              Email Address
             </label>
             <div className="relative group">
               <input
@@ -81,24 +117,16 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Error State */}
-          {errorMessage && (
-            <div className="flex items-center gap-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-r-md animate-fadeIn">
-              <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
-              <p className="text-sm text-red-700 font-medium">{errorMessage}</p>
-            </div>
-          )}
-
           {/* Action Button */}
           <button
             type="submit"
-            aria-disabled={isPending}
+            disabled={isPending}
             className={`w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg shadow-red-500/20 hover:shadow-red-500/30 focus:outline-none focus:ring-4 focus:ring-red-500/20 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base`}
           >
             {isPending ? (
               <Loader2 className="h-5 w-5 animate-spin text-white" />
             ) : (
-              'Masuk Dashboard'
+              'Log in to Dashboard'
             )}
           </button>
         </form>
@@ -106,7 +134,7 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="mt-8 sm:mt-12 text-center">
           <p className="text-xs text-slate-400 font-medium">
-            &copy; 2025 GIBEI System. Secured & Encrypted.
+            &copy; {new Date().getFullYear()} GIBEI System. Secured & Encrypted.
           </p>
         </div>
       </div>

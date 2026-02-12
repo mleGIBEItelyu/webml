@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { ToastProvider } from "@/components/providers/ToastProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );
