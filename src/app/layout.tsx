@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gibei Forecasting",
-  description: "AI-Driven Price Forecasting & Analysis Dashboard",
+  title: "GIBEI Forecasting | AI-Driven Market Intelligence",
+  description: "Advanced equitable AI-powered stock price forecasting and deep-tier financial analytics dashboard. Empowering researchers and students at GIBEI Telkom University.",
   robots: {
     index: false,
     follow: false,
