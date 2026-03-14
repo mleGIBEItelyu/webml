@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/components/providers/ToastProvider';
 import DashboardNavbar from '@/components/dashboard/DashboardNavbar';
 import DashboardMetrics from '@/components/dashboard/DashboardMetrics';
 import SearchModal from '@/components/dashboard/SearchModal';
 import PriceForecastChart from '@/components/dashboard/PriceForecastChart';
-import DashboardStatsGrid from '@/components/dashboard/DashboardStatsGrid';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
+import type { StockSignal } from '@/lib/types/signal';
+import type { ForecastHorizon } from '@/lib/utils/forecast';
 
 interface DashboardClientProps {
   user?: {
@@ -20,19 +21,46 @@ interface DashboardClientProps {
 export default function DashboardClient({ user }: DashboardClientProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState('BBCA');
+  const [signal, setSignal] = useState<StockSignal | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [horizon, setHorizon] = useState<ForecastHorizon>('1W');
   const { showToast, hideToast } = useToast();
 
-  const handleSearch = (newQuery: string) => {
-    if (newQuery) {
-      const toastId = showToast(`Analyzing ${newQuery.toUpperCase()}...`, 'loading');
-      setQuery(newQuery);
-      setIsSearchOpen(false);
-      
-      setTimeout(() => {
-        hideToast(toastId);
-        showToast(`Analysis complete for ${newQuery.toUpperCase()}`, 'success');
-      }, 600);
+  /** Fetch sinyal dari API route internal Next.js */
+  const fetchSignal = useCallback(async (ticker: string) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/signals/${ticker.toUpperCase()}`);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error ?? `HTTP ${res.status}`);
+      }
+      const data: StockSignal = await res.json();
+      setSignal(data);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      showToast(`Failed to fetch ${ticker}: ${msg}`, 'error');
+      setSignal(null);
+    } finally {
+      setIsLoading(false);
     }
+  }, [showToast]);
+
+  // Initial load
+  useEffect(() => {
+    fetchSignal('BBCA');
+  }, [fetchSignal]);
+
+  const handleSearch = (newQuery: string) => {
+    if (!newQuery) return;
+    const ticker = newQuery.toUpperCase();
+    const toastId = showToast(`Analyzing ${ticker}...`, 'loading');
+    setQuery(ticker);
+    setIsSearchOpen(false);
+    fetchSignal(ticker).then(() => {
+      hideToast(toastId);
+      showToast(`Analysis complete for ${ticker}`, 'success');
+    });
   };
 
   const resetSearch = () => {
@@ -40,7 +68,6 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     setIsSearchOpen(true);
   };
 
-  // Safe user name handling
   const userName = user?.name || 'Admin';
 
   return (
@@ -65,7 +92,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           
-          <DashboardMetrics query={query} />
+          <DashboardMetrics query={query} signal={signal} isLoading={isLoading} horizon={horizon} />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
@@ -77,14 +104,20 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                  <div className="flex justify-between items-center mb-6">
                    <h3 className="font-bold text-slate-800 text-lg">Price Movement Analysis</h3>
                    <div className="flex gap-2">
-                      {['1D', '1W', '1M', 'YTD'].map(t => (
-                        <button key={t} className={`px-3 py-1 text-xs font-bold rounded-full ${t === '1M' ? 'bg-slate-900 text-white' : 'text-slate-400 hover:bg-slate-100'}`}>{t}</button>
+                      {(['1D', '1W', '1M'] as ForecastHorizon[]).map(t => (
+                        <button 
+                          key={t}
+                          onClick={() => setHorizon(t)} 
+                          className={`px-3 py-1 text-xs font-bold rounded-full transition-colors ${horizon === t ? 'bg-slate-900 text-white' : 'text-slate-400 hover:bg-slate-100'}`}
+                        >
+                          {t}
+                        </button>
                       ))}
                    </div>
                  </div>
                  
                  <div className="h-[350px] w-full">
-                    <PriceForecastChart />
+                    <PriceForecastChart signal={signal} isLoading={isLoading} horizon={horizon} />
                  </div>
               </div>
 
@@ -92,7 +125,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
             {/* Sidebar Section (1/3) */}
             <div className="lg:col-span-1">
-               <DashboardSidebar />
+               <DashboardSidebar signal={signal} isLoading={isLoading} />
             </div>
 
           </div>
