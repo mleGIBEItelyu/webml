@@ -20,7 +20,7 @@ function getTickerMonthKey(ticker: string): string {
 function parseRange(rawData: any): { rangeMin: number, rangeMax: number } {
   let rangeMin = rawData.range_min_pct ?? 0;
   let rangeMax = rawData.range_max_pct ?? 0;
-  
+
   if (rawData.range && typeof rawData.range === 'string') {
     const match = rawData.range.match(/([-+]?[0-9]*\.?[0-9]+)%?.*?to.*?([-+]?[0-9]*\.?[0-9]+)%?/i);
     if (match && match.length >= 3) {
@@ -43,7 +43,7 @@ export async function getSignalByTicker(ticker: string): Promise<StockSignal | n
   try {
     const symbol = ticker.toUpperCase();
     const monthKey = getTickerMonthKey(symbol);
-    
+
     // 1. Cek cache di DB
     const cached = await db.query.apiData.findFirst({
       where: eq(apiData.monthKey, monthKey),
@@ -64,7 +64,7 @@ export async function getSignalByTicker(ticker: string): Promise<StockSignal | n
     try {
       const res = await fetch(`${GIBEI_API_URL}/predict/${symbol}`, {
         next: { revalidate: 0 },
-        signal: AbortSignal.timeout(30_000), 
+        signal: AbortSignal.timeout(30_000),
       });
       if (res.ok) {
         realtimeData = await res.json();
@@ -87,7 +87,10 @@ export async function getSignalByTicker(ticker: string): Promise<StockSignal | n
         ...realtimeData,
         date: realtimeData.date || new Date().toISOString(),
         range_min_pct: rangeMin,
-        range_max_pct: rangeMax
+        range_max_pct: rangeMax,
+        historical_dates: realtimeData.historical_dates,
+        historical_prices: realtimeData.historical_prices,
+        historical_volumes: realtimeData.historical_volumes,
       } as StockSignal;
 
       console.log(`[signals] Saving new monthly cache for ${monthKey}`);
@@ -109,6 +112,13 @@ export async function getSignalByTicker(ticker: string): Promise<StockSignal | n
       // Overwrite harga & tanggal jika sukses fetch realtime
       date: realtimeData ? (realtimeData.date || new Date().toISOString()) : forecastData!.date,
       last_close: realtimeData ? realtimeData.last_close : forecastData!.last_close,
+      volume: realtimeData
+        ? (realtimeData.volume ?? (realtimeData.historical_volumes?.length ? realtimeData.historical_volumes[realtimeData.historical_volumes.length - 1] : 0))
+        : forecastData!.volume,
+      // Always use the latest historical data if available
+      historical_dates: realtimeData?.historical_dates || forecastData!.historical_dates,
+      historical_prices: realtimeData?.historical_prices || forecastData!.historical_prices,
+      historical_volumes: realtimeData?.historical_volumes || forecastData!.historical_volumes,
     } as StockSignal;
 
   } catch (err) {

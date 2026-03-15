@@ -15,6 +15,9 @@ export interface StockSignal {
   volume?: number;        // dynamic metrics
   volatility?: string;
   risk_level?: string;
+  historical_dates?: string[];
+  historical_prices?: number[];
+  historical_volumes?: number[];
 }
 
 export type SignalType = StockSignal['signal'];

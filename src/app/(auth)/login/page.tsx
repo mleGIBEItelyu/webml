@@ -32,7 +32,13 @@ export default function LoginPage() {
       hideToast(toastId);
 
       if (result?.error) {
-        showToast(result.error || 'Invalid credentials.', 'error');
+        let errorMessage = 'Login failed. Please try again.';
+        if (result.error === 'CredentialsSignin') {
+          errorMessage = 'Invalid email or password.';
+        } else if (result.error.toLowerCase().includes('email')) {
+          errorMessage = 'Invalid email format or account not found.';
+        }
+        showToast(errorMessage, 'error');
         setIsPending(false);
       } else {
         showToast('Login successful! Redirecting...', 'success');
