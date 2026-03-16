@@ -32,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     const userRole = user.role || 'student';
 
                     if (userRole === 'student') {
-                        throw new Error('Access Denied: Students are not allowed.');
+                        throw new Error('STUDENT_ACCESS_DENIED');
                     }
 
                     const passwordsMatch = await compare(password, user.password);

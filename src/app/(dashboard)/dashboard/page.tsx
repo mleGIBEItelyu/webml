@@ -17,6 +17,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/providers/ToastProvider';
 import {
   ComposedChart,
@@ -359,6 +360,7 @@ function PriceForecastChart({
 
 export default function DashboardPage() {
   const { data: session } = useSession();
+  const router = useRouter();
   const { showToast, hideToast } = useToast();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -385,6 +387,12 @@ export default function DashboardPage() {
   }, [showToast]);
 
   useEffect(() => {
+    // Redirect if not authenticated or if user is a student
+    if (session?.user && (session.user as any).role === 'student') {
+        router.push('/login');
+        return;
+    }
+
     fetchSignal('BBCA');
 
     // Global keyboard shortcut to open search
