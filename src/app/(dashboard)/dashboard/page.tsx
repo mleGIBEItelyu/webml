@@ -608,7 +608,7 @@ export default function DashboardPage() {
 
       {/* Clean Top Navigation */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-10 h-16 sm:h-20 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 cursor-pointer shrink-0" onClick={() => setQuery('BBCA')}>
             <div className="w-8 h-8 rounded-md flex items-center justify-center overflow-hidden">
               <img src="/logo.png" alt="GIBEI Logo" className="w-full h-full object-contain" />
@@ -651,18 +651,18 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 pt-8 pb-32 sm:pb-40">
+      <main className="max-w-[1800px] mx-auto px-6 sm:px-10 lg:px-16 2xl:px-24 pt-8 sm:pt-12 pb-32 sm:pb-48">
 
         {/* Page Header & Primary Metrics */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 px-2 sm:px-0">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{query}</h1>
-              <span className="px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-600">
+              <h1 className="text-3xl sm:text-4xl 2xl:text-5xl font-bold text-slate-900 tracking-tight">{query}</h1>
+              <span className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs sm:text-sm font-semibold text-slate-600">
                 IDX Asset
               </span>
             </div>
-            <p className="text-sm text-slate-500">Machine Learning Price Forecast & Analytics</p>
+            <p className="text-sm sm:text-base text-slate-500 font-medium">Machine Learning Price Forecast & Analytics</p>
           </div>
 
           <div className="flex flex-col md:items-end gap-1 px-2 sm:px-0">
@@ -690,8 +690,8 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 px-1 sm:px-0">
 
           {/* Full Width Chart Section */}
-          <div className="lg:col-span-12 flex flex-col gap-6">
-            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col h-[380px] sm:h-[450px] lg:h-[500px]">
+          <div className="lg:col-span-12 flex flex-col gap-8">
+            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col h-[400px] sm:h-[500px] lg:h-[600px] 2xl:h-[700px]">
               {/* Chart Header - Restructured for top-alignment */}
               <div className="px-4 sm:px-6 py-4 border-b border-slate-100 flex flex-col gap-3 bg-slate-50/50">
                 <div className="flex justify-between items-start sm:items-center gap-4">
