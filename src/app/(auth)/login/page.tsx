@@ -37,6 +37,8 @@ export default function LoginPage() {
           errorMessage = 'Invalid email or password.';
         } else if (result.error.toLowerCase().includes('email')) {
           errorMessage = 'Invalid email format or account not found.';
+        } else if (result.error.includes('STUDENT_ACCESS_DENIED')) {
+          errorMessage = 'Hanya bisa diakses oleh staf internal GIBEI';
         }
         showToast(errorMessage, 'error');
         setIsPending(false);
